@@ -78,27 +78,6 @@
             transform: translateY(-5px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
-        .whatsapp-float {
-            position: fixed;
-            width: 60px;
-            height: 60px;
-            bottom: 40px;
-            right: 40px;
-            background-color: #25D366;
-            color: #FFF;
-            border-radius: 50px;
-            text-align: center;
-            font-size: 30px;
-            box-shadow: 2px 2px 3px #999;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.3s ease;
-        }
-        .whatsapp-float:hover {
-            transform: scale(1.1);
-        }
         .welcome-bg {
             position: relative;
             background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://i.postimg.cc/KjXwr8sT/Gemini-Generated-Image-a0hk6fa0hk6fa0hk.webp');
@@ -177,6 +156,37 @@
             height: 100%;
             z-index: -1; /* Coloca el canvas detrás de todo */
             pointer-events: none; /* Evita que interfiera con los clics */
+        }
+        /* Estilos para el nuevo botón flotante de ayuda */
+        .whatsapp-help-bubble {
+            background-color: #f0fdf4; /* Verde muy claro */
+            color: #166534; /* Verde oscuro */
+            padding: 8px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+            margin-right: 12px;
+            opacity: 0;
+            transform: translateX(10px);
+            animation: fadeInBubble 0.5s 2s forwards; /* Aparece después de 2 segundos */
+        }
+        .whatsapp-help-bubble::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -8px;
+            margin-top: -8px;
+            border-width: 8px;
+            border-style: solid;
+            border-color: transparent transparent transparent #f0fdf4;
+        }
+        @keyframes fadeInBubble {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
     </style>
 </head>
@@ -352,7 +362,6 @@
                                         <option value="FUERA">Fuera de Tegucigalpa</option>
                                     </select>
                                 </div>
-                                <!-- El botón de submit se moverá debajo del resumen -->
                             </form>
                         </div>
                     </div>
@@ -381,7 +390,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- BOTÓN DE HACER PEDIDO AHORA ESTÁ AQUÍ -->
                         <button type="submit" form="order-form" id="submit-order-btn" class="w-full btn-primary text-lg font-semibold py-3 rounded-full mt-8">
                             Hacer Pedido
                         </button>
@@ -427,17 +435,22 @@
         </div>
     </footer>
 
-    <!-- Botón Flotante de WhatsApp -->
-    <a href="https://wa.link/iiixjz"
-       class="whatsapp-float"
-       target="_blank"
-       rel="noopener noreferrer"
-       aria-label="Contactar por WhatsApp">
-        <i class="fab fa-whatsapp"></i>
-    </a>
+    <!-- Contenedor para botones flotantes -->
+    <div class="fixed bottom-10 right-10 z-[100] flex items-center">
+        <a href="https://wa.link/iiixjz" target="_blank" rel="noopener noreferrer" class="whatsapp-help-bubble">
+            ¿Dudas? ¡Consulta aquí!
+        </a>
+        <a href="https://wa.link/iiixjz"
+           class="whatsapp-float"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Contactar por WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
 
     <!-- Modal para notificaciones -->
-    <div id="notification-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div id="notification-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[110] flex items-center justify-center p-4">
         <div class="bg-white p-6 rounded-lg shadow-xl text-center max-w-sm mx-auto">
             <div id="notification-success-icon" class="hidden">
                 <i class="fas fa-check-circle text-green-500 text-5xl mb-4"></i>
@@ -596,7 +609,7 @@
                     }
                 }
                 updateCartUI();
-                showNotification(`${isBox ? 'Caja' : 'Producto'} añadido al carrito!`);
+                showNotification(`${isBox ? 'Caja' : (quantity + ' ' + products.find(p=>p.id==productId).name)} añadido(s) al carrito!`);
             };
 
             const updateCartUI = () => {
@@ -683,17 +696,16 @@
             // --- Renderizado Inicial ---
             products.forEach(product => {
                 const card = document.createElement('div');
-                card.className = 'card text-center';
+                card.className = 'card text-center flex flex-col'; // Añadido flex y flex-col
                 card.innerHTML = `
                     <div class="relative product-image-container">
                         <img src="${product.img}" alt="${product.name}" class="product-image" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ccc/333?text=Imagen+no+disponible';">
                     </div>
-                    <div class="p-6 flex flex-col h-64">
+                    <div class="p-6 flex flex-col flex-grow"> <!-- Añadido flex-grow -->
                         <h3 class="text-xl font-bold text-gray-800 mb-2">${product.name}</h3>
                         <p class="text-gray-600 mb-4 flex-grow">${product.desc}</p>
                         <div class="mt-auto">
                             <p class="text-green-700 font-bold text-lg mb-4">L ${product.price.toFixed(2)}</p>
-                            <!-- NUEVO CONTADOR DE CANTIDAD -->
                             <div class="flex items-center justify-center space-x-4 mb-4">
                                 <button class="quantity-btn minus-btn bg-gray-200 rounded-full w-8 h-8 text-lg font-bold text-gray-700">-</button>
                                 <span class="quantity-value text-lg font-bold">1</span>
@@ -706,11 +718,13 @@
                 productGrid.appendChild(card);
             });
 
-            // --- Lógica para los contadores de cantidad en las tarjetas ---
             productGrid.addEventListener('click', (e) => {
                 const target = e.target;
+                const cardBody = target.closest('.p-6');
+                if (!cardBody) return;
+
                 if (target.classList.contains('quantity-btn')) {
-                    const valueSpan = target.parentElement.querySelector('.quantity-value');
+                    const valueSpan = cardBody.querySelector('.quantity-value');
                     let currentValue = parseInt(valueSpan.textContent);
                     if (target.classList.contains('plus-btn')) {
                         currentValue++;
@@ -722,13 +736,11 @@
                 
                 if (target.classList.contains('add-to-cart-btn')) {
                     const productId = target.dataset.id;
-                    const quantity = parseInt(target.parentElement.querySelector('.quantity-value').textContent);
+                    const quantity = parseInt(cardBody.querySelector('.quantity-value').textContent);
                     addToCart(productId, quantity);
-                    // Resetear el contador a 1 después de añadir
-                    target.parentElement.querySelector('.quantity-value').textContent = '1';
+                    cardBody.querySelector('.quantity-value').textContent = '1';
                 }
             });
-
 
             soaps.forEach(product => {
                 const item = document.createElement('div');
@@ -829,8 +841,6 @@
                 submitOrderBtn.disabled = true;
                 submitOrderBtn.textContent = 'Procesando...';
 
-                // --- URL de tu Web App de Google Apps Script ---
-                // --- ¡¡¡IMPORTANTE!!! DEBES REEMPLAZAR ESTA URL ---
                 const scriptURL = 'https://script.google.com/macros/s/AKfycbz1eZk9bgE7araXMng7vhixDLeemsoWRrThdds6lurP9nJC-nOYOSCOTawifsrvn8wV/exec';
                 
                 const formData = new FormData(orderForm);
