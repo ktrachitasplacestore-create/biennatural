@@ -38,7 +38,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* Aumenté la opacidad para mejor contraste */
+            background-color: rgba(0, 0, 0, 0.5);
             z-index: 1;
         }
         .hero-content {
@@ -52,6 +52,10 @@
         }
         .btn-primary:hover {
             background-color: #556B2F; /* Verde olivo oscuro */
+        }
+         .btn-primary:disabled {
+            background-color: #9db479;
+            cursor: not-allowed;
         }
         .btn-secondary {
             background-color: transparent;
@@ -73,17 +77,6 @@
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        .new-badge {
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
-            background-color: #8FBC8F; /* Verde mar oscuro */
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
         }
         .whatsapp-float {
             position: fixed;
@@ -191,7 +184,7 @@
     <canvas id="bubble-canvas"></canvas>
 
     <!-- Header -->
-    <header class="bg-white/80 backdrop-blur-md shadow-sm fixed top-0 left-0 right-0 z-50">
+    <header class="bg-white/80 backdrop-blur-md shadow-sm fixed top: 0; left: 0; right: 0; z-index: 50;">
         <div class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
                 <div class="text-2xl font-bold text-gray-800">
@@ -342,24 +335,53 @@
                         <div id="checkout-summary" class="bg-white p-6 rounded-lg shadow-md">
                            <!-- El resumen del carrito se insertará aquí -->
                         </div>
+                         <!-- NUEVA SECCIÓN DE INFORMACIÓN DE PAGO Y ENTREGA -->
+                        <div class="bg-white p-6 rounded-lg shadow-md mt-8">
+                            <h3 class="text-xl text-gray-700 mb-4 font-bold">Información de Entrega y Pago</h3>
+                            <div class="space-y-3 text-gray-600">
+                                <p><i class="fas fa-truck text-green-600 mr-2"></i>Tiempo de entrega: <strong>3 días hábiles</strong> aprox.</p>
+                                <p><i class="fas fa-money-bill-wave text-green-600 mr-2"></i>Paga de forma segura <strong>al momento de recibir</strong> tu pedido.</p>
+                            </div>
+                            <div class="flex justify-center items-center space-x-6 mt-4 text-gray-500">
+                                <div class="text-center">
+                                    <i class="fas fa-shield-alt text-3xl"></i>
+                                    <p class="text-xs mt-1">Pago Seguro</p>
+                                </div>
+                                <div class="text-center">
+                                    <i class="fas fa-box-open text-3xl"></i>
+                                    <p class="text-xs mt-1">Entrega Confiable</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div id="checkout-form-container">
-                        <h3 class="text-2xl text-gray-700 mb-6">Tus Datos</h3>
+                        <h3 class="text-2xl text-gray-700 mb-6">Tus Datos de Envío</h3>
                         <div class="bg-white p-6 rounded-lg shadow-md">
-                            <form>
+                            <form id="order-form">
                                 <div class="mb-4">
                                     <label for="name" class="block text-gray-700 font-bold mb-2">Nombre Completo</label>
-                                    <input type="text" id="name" class="w-full px-3 py-2 border rounded-lg" placeholder="Tu nombre">
+                                    <input type="text" id="name" name="name" class="w-full px-3 py-2 border rounded-lg" placeholder="Tu nombre" required>
                                 </div>
                                 <div class="mb-4">
                                     <label for="phone" class="block text-gray-700 font-bold mb-2">Número de WhatsApp</label>
-                                    <input type="tel" id="phone" class="w-full px-3 py-2 border rounded-lg" placeholder="Ej: 9988-7766">
+                                    <input type="tel" id="phone" name="phone" class="w-full px-3 py-2 border rounded-lg" placeholder="Ej: 9988-7766" required>
                                 </div>
                                 <div class="mb-4">
                                     <label for="address" class="block text-gray-700 font-bold mb-2">Dirección de Entrega</label>
-                                    <textarea id="address" rows="3" class="w-full px-3 py-2 border rounded-lg" placeholder="Colonia, calle, número de casa..."></textarea>
+                                    <textarea id="address" name="address" rows="3" class="w-full px-3 py-2 border rounded-lg" placeholder="Colonia, calle, número de casa..." required></textarea>
                                 </div>
-                                <button type="button" id="confirm-order-btn" class="w-full btn-primary text-lg font-semibold py-3 rounded-full">Confirmar Pedido por WhatsApp</button>
+                                <!-- NUEVO SELECTOR DE UBICACIÓN -->
+                                <div class="mb-6">
+                                    <label class="block text-gray-700 font-bold mb-2">Ubicación de Entrega</label>
+                                    <select id="location-select" name="location" class="w-full px-3 py-2 border rounded-lg" required>
+                                        <option value="">Selecciona tu ubicación</option>
+                                        <option value="TGU">Dentro de Tegucigalpa</option>
+                                        <option value="FUERA">Fuera de Tegucigalpa</option>
+                                    </select>
+                                </div>
+                                <button type="submit" id="submit-order-btn" class="w-full btn-primary text-lg font-semibold py-3 rounded-full">
+                                    Hacer Pedido
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -378,7 +400,7 @@
                     <div class="flex justify-center md:justify-start mt-4 space-x-4">
                         <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f fa-lg"></i></a>
                         <a href="https://www.instagram.com/biennaturalhn?igsh=a2ZzMnE4bDBmZzU%3D" target="_blank" class="text-gray-400 hover:text-white"><i class="fab fa-instagram fa-lg"></i></a>
-                        <a href="https://wa.me/50431996515?text=¡Hola!%20Quisiera%20más%20información%20sobre%20los%20productos%20de%20Bien%20Natural." target="_blank" class="text-gray-400 hover:text-white"><i class="fab fa-whatsapp fa-lg"></i></a>
+                        <a href="https://wa.link/iiixjz" target="_blank" class="text-gray-400 hover:text-white"><i class="fab fa-whatsapp fa-lg"></i></a>
                     </div>
                 </div>
                 <div>
@@ -405,7 +427,7 @@
     </footer>
 
     <!-- Botón Flotante de WhatsApp -->
-    <a href="https://wa.me/50431996515?text=¡Hola!%20Quisiera%20hacer%20un%20pedido."
+    <a href="https://wa.link/iiixjz"
        class="whatsapp-float"
        target="_blank"
        rel="noopener noreferrer"
@@ -414,8 +436,14 @@
     </a>
 
     <!-- Modal para notificaciones -->
-    <div id="notification-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+    <div id="notification-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
         <div class="bg-white p-6 rounded-lg shadow-xl text-center max-w-sm mx-auto">
+            <div id="notification-success-icon" class="hidden">
+                <i class="fas fa-check-circle text-green-500 text-5xl mb-4"></i>
+            </div>
+             <div id="notification-error-icon" class="hidden">
+                <i class="fas fa-times-circle text-red-500 text-5xl mb-4"></i>
+            </div>
             <p id="notification-message" class="text-lg text-gray-700"></p>
             <button onclick="closeNotification()" class="mt-4 btn-primary py-2 px-6 rounded-full">Entendido</button>
         </div>
@@ -518,24 +546,36 @@
             const clearBoxBtn = document.getElementById('clear-box-btn');
             const addBoxToCartBtn = document.getElementById('add-box-to-cart-btn');
             const clearCartBtn = document.getElementById('clear-cart-btn');
+            const locationSelect = document.getElementById('location-select');
+            const orderForm = document.getElementById('order-form');
+            const submitOrderBtn = document.getElementById('submit-order-btn');
 
             // --- Estado de la aplicación ---
             let boxContents = [];
-            let cart = {}; // { productId: { ...product, quantity: X } }
+            let cart = {}; 
 
             // --- Notificaciones ---
             const notificationModal = document.getElementById('notification-modal');
             const notificationMessage = document.getElementById('notification-message');
+            const successIcon = document.getElementById('notification-success-icon');
+            const errorIcon = document.getElementById('notification-error-icon');
 
-            window.showNotification = (message) => {
+            window.showNotification = (message, isSuccess = true) => {
                 notificationMessage.textContent = message;
+                if(isSuccess) {
+                    successIcon.classList.remove('hidden');
+                    errorIcon.classList.add('hidden');
+                } else {
+                    successIcon.classList.add('hidden');
+                    errorIcon.classList.remove('hidden');
+                }
                 notificationModal.classList.remove('hidden');
             }
             window.closeNotification = () => {
                 notificationModal.classList.add('hidden');
             }
 
-            // --- Lógica del Carrito ---
+            // --- Lógica del Carrito y Envío ---
             const addToCart = (productId, quantity = 1, isBox = false, boxDetails = {}) => {
                 if (isBox) {
                     const boxId = `caja-${Date.now()}`;
@@ -574,8 +614,7 @@
                 const cartEmptyMessage = document.getElementById('cart-empty-message');
                 const cartContent = document.getElementById('cart-content');
                 let summaryHTML = '';
-                let totalPrice = 0;
-
+                
                 const cartItems = Object.values(cart);
 
                 if (cartItems.length === 0) {
@@ -587,36 +626,62 @@
                 cartEmptyMessage.classList.add('hidden');
                 cartContent.classList.remove('hidden');
 
+                let subtotal = 0;
                 for (const itemId in cart) {
                     const item = cart[itemId];
                     const itemTotal = item.price * item.quantity;
-                    totalPrice += itemTotal;
+                    subtotal += itemTotal;
                     summaryHTML += `
-                        <div class="py-3 border-b border-gray-200 last:border-b-0 text-gray-700">
-                            <div class="flex justify-between items-center">
-                                <span class="font-bold">${item.quantity} x ${item.name}</span>
-                                <span class="font-semibold">L ${itemTotal.toFixed(2)}</span>
+                        <div class="py-2 border-b border-gray-100 last:border-b-0 text-gray-700 flex justify-between items-center">
+                            <div>
+                                <p class="font-bold">${item.quantity} x ${item.name}</p>
+                                ${item.description ? `<p class="text-xs text-gray-500">${item.description}</p>` : ''}
                             </div>
-                            ${item.description ? `<p class="text-sm text-gray-500 mt-1">${item.description}</p>` : ''}
+                            <span class="font-semibold">L ${itemTotal.toFixed(2)}</span>
                         </div>
                     `;
                 }
+                
+                // --- Lógica de cálculo de envío ---
+                const location = locationSelect.value;
+                let shippingCost = 0;
+                if (location === 'TGU') {
+                    shippingCost = 85;
+                } else if (location === 'FUERA') {
+                    shippingCost = 150;
+                }
+                
+                if (subtotal >= 700) {
+                    shippingCost = 0;
+                }
 
-                checkoutSummary.innerHTML = summaryHTML + `
-                    <div class="mt-6 border-t pt-4 flex justify-between text-lg font-bold text-gray-800">
-                        <span>Total</span>
-                        <span>L ${totalPrice.toFixed(2)}</span>
-                    </div>`;
+                const total = subtotal + shippingCost;
+                
+                // --- Construcción del resumen final ---
+                const summaryTotalsHTML = `
+                    <div class="mt-4 border-t pt-4 space-y-2 text-gray-800">
+                        <div class="flex justify-between"><span>Subtotal</span><span>L ${subtotal.toFixed(2)}</span></div>
+                        <div class="flex justify-between">
+                            <span>Envío</span>
+                            ${(shippingCost === 0 && subtotal >= 700) ? `<span class="text-green-600 font-bold">GRATIS</span>` : `<span>L ${shippingCost.toFixed(2)}</span>`}
+                        </div>
+                        <div class="flex justify-between font-bold text-lg"><span>Total</span><span>L ${total.toFixed(2)}</span></div>
+                    </div>
+                `;
+
+                checkoutSummary.innerHTML = summaryHTML + summaryTotalsHTML;
             };
             
+            locationSelect.addEventListener('change', updateCheckoutPage);
+
             clearCartBtn.addEventListener('click', () => {
                 cart = {};
+                locationSelect.value = "";
                 updateCartUI();
                 showNotification('El carrito ha sido vaciado.');
             });
 
             // --- Renderizado Inicial ---
-            // Renderizar productos en la galería de la página principal
             products.forEach(product => {
                 const card = document.createElement('div');
                 card.className = 'card text-center';
@@ -636,7 +701,6 @@
                 productGrid.appendChild(card);
             });
 
-            // Renderizar lista de jabones en la página "Arma tu Caja"
             soaps.forEach(product => {
                 const item = document.createElement('div');
                 item.className = 'flavor-item flex items-center p-2 rounded-lg';
@@ -720,7 +784,6 @@
                 showPage('checkout');
             });
             
-            // Event listener para botones "Añadir al Carrito" en la galería
             productGrid.addEventListener('click', (e) => {
                 if (e.target.classList.contains('add-to-cart-btn')) {
                     const productId = e.target.dataset.id;
@@ -728,38 +791,64 @@
                 }
             });
 
-            // --- Lógica del Pedido por WhatsApp ---
-            document.getElementById('confirm-order-btn').addEventListener('click', () => {
-                const name = document.getElementById('name').value;
-                const phone = document.getElementById('phone').value;
-                const address = document.getElementById('address').value;
+            // --- Lógica del Pedido para Google Sheets ---
+            orderForm.addEventListener('submit', (e) => {
+                e.preventDefault();
 
-                if (!name || !phone || !address) {
-                    showNotification('Por favor, completa todos tus datos para continuar.');
-                    return;
-                }
                 if (Object.keys(cart).length === 0) {
-                    showNotification('Tu carrito está vacío. Añade productos antes de confirmar.');
+                    showNotification('Tu carrito está vacío.', false);
+                    return;
+                }
+                if (!locationSelect.value) {
+                    showNotification('Por favor, selecciona tu ubicación de entrega.', false);
                     return;
                 }
 
-                let message = '¡Hola Bien Natural! Quisiera hacer el siguiente pedido:\n\n';
-                let totalPrice = 0;
-                for (const itemId in cart) {
-                    const item = cart[itemId];
-                    message += `*${item.quantity} x ${item.name}*\n`;
-                    if (item.description) {
-                        message += `  (${item.description})\n`;
-                    }
-                    totalPrice += item.price * item.quantity;
-                }
-                message += `\n*Total: L ${totalPrice.toFixed(2)}*\n\n`;
-                message += `*Mis datos:*\n`;
-                message += `Nombre: ${name}\n`;
-                message += `Teléfono: ${phone}\n`;
-                message += `Dirección: ${address}`;
+                submitOrderBtn.disabled = true;
+                submitOrderBtn.textContent = 'Procesando...';
 
-                window.open(`https://wa.me/50431996515?text=${encodeURIComponent(message)}`, '_blank');
+                // --- URL de tu Web App de Google Apps Script ---
+                // --- ¡¡¡IMPORTANTE!!! DEBES REEMPLAZAR ESTA URL ---
+                const scriptURL = 'PEGA_AQUÍ_LA_URL_DE_TU_WEB_APP_DE_GOOGLE';
+                
+                const formData = new FormData(orderForm);
+                
+                // Añadir detalles del carrito al formulario
+                let orderDetails = '';
+                let subtotal = 0;
+                Object.values(cart).forEach(item => {
+                    orderDetails += `${item.quantity} x ${item.name}`;
+                    if(item.description) orderDetails += ` (${item.description})`;
+                    orderDetails += ' | ';
+                    subtotal += item.price * item.quantity;
+                });
+                
+                let shippingCost = locationSelect.value === 'TGU' ? 85 : 150;
+                if (subtotal >= 700) shippingCost = 0;
+                const total = subtotal + shippingCost;
+
+                formData.append('orderDetails', orderDetails.slice(0, -3)); // Quita el último ' | '
+                formData.append('subtotal', subtotal.toFixed(2));
+                formData.append('shipping', shippingCost.toFixed(2));
+                formData.append('total', total.toFixed(2));
+
+
+                fetch(scriptURL, { method: 'POST', body: formData})
+                    .then(response => {
+                        showNotification('¡Pedido realizado con éxito! Gracias por tu compra.', true);
+                        cart = {};
+                        orderForm.reset();
+                        locationSelect.value = "";
+                        updateCartUI();
+                    })
+                    .catch(error => {
+                        showNotification('Hubo un error al enviar tu pedido. Por favor, intenta de nuevo.', false);
+                        console.error('Error!', error.message);
+                    })
+                    .finally(() => {
+                        submitOrderBtn.disabled = false;
+                        submitOrderBtn.textContent = 'Hacer Pedido';
+                    });
             });
 
             // --- Lógica de Navegación ---
@@ -771,7 +860,7 @@
                 document.getElementById(`${pageId}-page`).classList.remove('hidden');
                 window.scrollTo(0, 0);
                 if (pageId === 'checkout') updateCheckoutPage();
-                mobileMenu.classList.add('hidden'); // Ocultar menú móvil al cambiar de página
+                mobileMenu.classList.add('hidden');
             }
 
             // --- Script para la animación de bienvenida al deslizar ---
