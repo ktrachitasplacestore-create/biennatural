@@ -184,7 +184,7 @@
     <canvas id="bubble-canvas"></canvas>
 
     <!-- Header -->
-    <header class="bg-white/80 backdrop-blur-md shadow-sm fixed top: 0; left: 0; right: 0; z-index: 50;">
+    <header class="bg-white/80 backdrop-blur-md shadow-sm fixed top-0 left-0 right-0 z-50">
         <div class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
                 <div class="text-2xl font-bold text-gray-800">
@@ -326,16 +326,44 @@
                     <p class="text-gray-500 text-xl">Tu carrito está vacío.</p>
                     <button onclick="showPage('home')" class="mt-6 btn-primary text-lg font-semibold py-3 px-8 rounded-full">Ver Productos</button>
                 </div>
+                <!-- LAYOUT CAMBIADO: AHORA EL FORMULARIO VA PRIMERO -->
                 <div id="cart-content" class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div id="checkout-form-container">
+                        <h3 class="text-2xl text-gray-700 mb-6">1. Tus Datos de Envío</h3>
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <form id="order-form">
+                                <div class="mb-4">
+                                    <label for="name" class="block text-gray-700 font-bold mb-2">Nombre Completo</label>
+                                    <input type="text" id="name" name="name" class="w-full px-3 py-2 border rounded-lg" placeholder="Tu nombre" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="phone" class="block text-gray-700 font-bold mb-2">Número de WhatsApp</label>
+                                    <input type="tel" id="phone" name="phone" class="w-full px-3 py-2 border rounded-lg" placeholder="Ej: 9988-7766" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="address" class="block text-gray-700 font-bold mb-2">Dirección de Entrega</label>
+                                    <textarea id="address" name="address" rows="3" class="w-full px-3 py-2 border rounded-lg" placeholder="Colonia, calle, número de casa..." required></textarea>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-gray-700 font-bold mb-2">Ubicación de Entrega</label>
+                                    <select id="location-select" name="location" class="w-full px-3 py-2 border rounded-lg" required>
+                                        <option value="">Selecciona tu ubicación</option>
+                                        <option value="TGU">Dentro de Tegucigalpa</option>
+                                        <option value="FUERA">Fuera de Tegucigalpa</option>
+                                    </select>
+                                </div>
+                                <!-- El botón de submit se moverá debajo del resumen -->
+                            </form>
+                        </div>
+                    </div>
                     <div>
                         <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-2xl text-gray-700">Resumen de tu Pedido</h3>
+                            <h3 class="text-2xl text-gray-700">2. Resumen de tu Pedido</h3>
                             <button id="clear-cart-btn" title="Vaciar Carrito" class="text-red-500 hover:text-red-700 text-sm font-semibold">Vaciar Carrito</button>
                         </div>
                         <div id="checkout-summary" class="bg-white p-6 rounded-lg shadow-md">
                            <!-- El resumen del carrito se insertará aquí -->
                         </div>
-                         <!-- NUEVA SECCIÓN DE INFORMACIÓN DE PAGO Y ENTREGA -->
                         <div class="bg-white p-6 rounded-lg shadow-md mt-8">
                             <h3 class="text-xl text-gray-700 mb-4 font-bold">Información de Entrega y Pago</h3>
                             <div class="space-y-3 text-gray-600">
@@ -353,37 +381,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div id="checkout-form-container">
-                        <h3 class="text-2xl text-gray-700 mb-6">Tus Datos de Envío</h3>
-                        <div class="bg-white p-6 rounded-lg shadow-md">
-                            <form id="order-form">
-                                <div class="mb-4">
-                                    <label for="name" class="block text-gray-700 font-bold mb-2">Nombre Completo</label>
-                                    <input type="text" id="name" name="name" class="w-full px-3 py-2 border rounded-lg" placeholder="Tu nombre" required>
-                                </div>
-                                <div class="mb-4">
-                                    <label for="phone" class="block text-gray-700 font-bold mb-2">Número de WhatsApp</label>
-                                    <input type="tel" id="phone" name="phone" class="w-full px-3 py-2 border rounded-lg" placeholder="Ej: 9988-7766" required>
-                                </div>
-                                <div class="mb-4">
-                                    <label for="address" class="block text-gray-700 font-bold mb-2">Dirección de Entrega</label>
-                                    <textarea id="address" name="address" rows="3" class="w-full px-3 py-2 border rounded-lg" placeholder="Colonia, calle, número de casa..." required></textarea>
-                                </div>
-                                <!-- NUEVO SELECTOR DE UBICACIÓN -->
-                                <div class="mb-6">
-                                    <label class="block text-gray-700 font-bold mb-2">Ubicación de Entrega</label>
-                                    <select id="location-select" name="location" class="w-full px-3 py-2 border rounded-lg" required>
-                                        <option value="">Selecciona tu ubicación</option>
-                                        <option value="TGU">Dentro de Tegucigalpa</option>
-                                        <option value="FUERA">Fuera de Tegucigalpa</option>
-                                    </select>
-                                </div>
-                                <button type="submit" id="submit-order-btn" class="w-full btn-primary text-lg font-semibold py-3 rounded-full">
-                                    Hacer Pedido
-                                </button>
-                            </form>
-                        </div>
+                        <!-- BOTÓN DE HACER PEDIDO AHORA ESTÁ AQUÍ -->
+                        <button type="submit" form="order-form" id="submit-order-btn" class="w-full btn-primary text-lg font-semibold py-3 rounded-full mt-8">
+                            Hacer Pedido
+                        </button>
                     </div>
                 </div>
             </div>
@@ -483,7 +484,7 @@
 
                 update() {
                     this.y -= this.speedY;
-                    this.x += this.speedX + Math.sin(this.y / 50) * 0.5; // Movimiento ondulante
+                    this.x += this.speedX + Math.sin(this.y / 50) * 0.5;
                     if (this.y < -this.radius) {
                         this.life = false;
                     }
@@ -507,7 +508,7 @@
                         bubbles.splice(i, 1);
                     }
                 }
-                if (bubbles.length < 40) { // Limita el número de burbujas en pantalla
+                if (bubbles.length < 40) {
                     bubbles.push(new Bubble());
                 }
             }
@@ -591,7 +592,7 @@
                         cart[productId].quantity += quantity;
                     } else {
                         const product = products.find(p => p.id == productId);
-                        cart[productId] = { ...product, quantity: 1 };
+                        cart[productId] = { ...product, quantity: quantity };
                     }
                 }
                 updateCartUI();
@@ -642,7 +643,6 @@
                     `;
                 }
                 
-                // --- Lógica de cálculo de envío ---
                 const location = locationSelect.value;
                 let shippingCost = 0;
                 if (location === 'TGU') {
@@ -657,7 +657,6 @@
 
                 const total = subtotal + shippingCost;
                 
-                // --- Construcción del resumen final ---
                 const summaryTotalsHTML = `
                     <div class="mt-4 border-t pt-4 space-y-2 text-gray-800">
                         <div class="flex justify-between"><span>Subtotal</span><span>L ${subtotal.toFixed(2)}</span></div>
@@ -694,12 +693,42 @@
                         <p class="text-gray-600 mb-4 flex-grow">${product.desc}</p>
                         <div class="mt-auto">
                             <p class="text-green-700 font-bold text-lg mb-4">L ${product.price.toFixed(2)}</p>
+                            <!-- NUEVO CONTADOR DE CANTIDAD -->
+                            <div class="flex items-center justify-center space-x-4 mb-4">
+                                <button class="quantity-btn minus-btn bg-gray-200 rounded-full w-8 h-8 text-lg font-bold text-gray-700">-</button>
+                                <span class="quantity-value text-lg font-bold">1</span>
+                                <button class="quantity-btn plus-btn bg-gray-200 rounded-full w-8 h-8 text-lg font-bold text-gray-700">+</button>
+                            </div>
                             <button data-id="${product.id}" class="add-to-cart-btn btn-primary text-sm font-semibold py-2 px-4 rounded-full w-full">Añadir al Carrito</button>
                         </div>
                     </div>
                 `;
                 productGrid.appendChild(card);
             });
+
+            // --- Lógica para los contadores de cantidad en las tarjetas ---
+            productGrid.addEventListener('click', (e) => {
+                const target = e.target;
+                if (target.classList.contains('quantity-btn')) {
+                    const valueSpan = target.parentElement.querySelector('.quantity-value');
+                    let currentValue = parseInt(valueSpan.textContent);
+                    if (target.classList.contains('plus-btn')) {
+                        currentValue++;
+                    } else if (target.classList.contains('minus-btn') && currentValue > 1) {
+                        currentValue--;
+                    }
+                    valueSpan.textContent = currentValue;
+                }
+                
+                if (target.classList.contains('add-to-cart-btn')) {
+                    const productId = target.dataset.id;
+                    const quantity = parseInt(target.parentElement.querySelector('.quantity-value').textContent);
+                    addToCart(productId, quantity);
+                    // Resetear el contador a 1 después de añadir
+                    target.parentElement.querySelector('.quantity-value').textContent = '1';
+                }
+            });
+
 
             soaps.forEach(product => {
                 const item = document.createElement('div');
@@ -784,13 +813,6 @@
                 showPage('checkout');
             });
             
-            productGrid.addEventListener('click', (e) => {
-                if (e.target.classList.contains('add-to-cart-btn')) {
-                    const productId = e.target.dataset.id;
-                    addToCart(productId);
-                }
-            });
-
             // --- Lógica del Pedido para Google Sheets ---
             orderForm.addEventListener('submit', (e) => {
                 e.preventDefault();
@@ -813,7 +835,6 @@
                 
                 const formData = new FormData(orderForm);
                 
-                // Añadir detalles del carrito al formulario
                 let orderDetails = '';
                 let subtotal = 0;
                 Object.values(cart).forEach(item => {
@@ -827,7 +848,7 @@
                 if (subtotal >= 700) shippingCost = 0;
                 const total = subtotal + shippingCost;
 
-                formData.append('orderDetails', orderDetails.slice(0, -3)); // Quita el último ' | '
+                formData.append('orderDetails', orderDetails.slice(0, -3));
                 formData.append('subtotal', subtotal.toFixed(2));
                 formData.append('shipping', shippingCost.toFixed(2));
                 formData.append('total', total.toFixed(2));
